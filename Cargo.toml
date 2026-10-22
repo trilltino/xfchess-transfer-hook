@@ -1,0 +1,31 @@
+[workspace]
+members = ["hook-kit", "programs/xfchess-pass"]
+resolver = "2"
+
+[workspace.package]
+version = "0.3.0"
+edition = "2024"
+license = "MIT"
+rust-version = "1.95"
+publish = false
+
+# Anchor's Solana-v4 family is explicit; its default Solana-v3 feature must stay disabled.
+# Exact pins and Cargo.lock keep the workspace reproducible.
+[workspace.dependencies]
+anchor-lang = { version = "=1.2.1", default-features = false, features = ["solana-v4"] }
+anchor-spl = { version = "=1.2.1", default-features = false, features = ["solana-v4", "token", "token_2022"] }
+hook-kit = { path = "hook-kit" }
+spl-discriminator = "=0.5.2"
+spl-tlv-account-resolution = "=0.11.4"
+spl-transfer-hook-interface = "=2.1.0"
+
+# Programs must not wrap silently: an overflow becomes a failed transaction, never a wrong value.
+[profile.release]
+overflow-checks = true
+lto = "fat"
+codegen-units = 1
+
+[profile.release.build-override]
+opt-level = 3
+incremental = false
+codegen-units = 1

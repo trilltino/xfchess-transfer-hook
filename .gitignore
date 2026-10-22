@@ -1,0 +1,25 @@
+# Build output at the workspace root or inside any hook/export.
+target/
+.anchor/
+__pycache__/
+.DS_Store
+Thumbs.db
+
+node_modules/
+
+# Private keys and credentials: never commit them
+/.keys/
+.env
+.env.local
+.env.*.local
+*.keypair.json
+# what cargo build-sbf generates next to the .so: a program keypair is a private key
+*-keypair.json
+
+# Local scratch: fetched reference trees, caches and private notes (never tracked)
+/.cache/
+/reference/
+*.pdf
+
+# Editor workspace files point at local folders outside the repository
+*.code-workspace

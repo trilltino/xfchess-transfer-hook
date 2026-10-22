@@ -1,0 +1,37 @@
+# Manifest for the XFChess Pass program, a hook that moves a one-unit pass only to eligible wallets.
+
+[package]
+name = "xfchess-pass"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+description = "Reference Transfer Hook (Anchor): a pass moves only to wallets with a current, registrar-attested rating record in range"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "xfchess_pass"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build", "hook-kit/idl-build"]
+
+[dependencies]
+anchor-lang.workspace = true
+anchor-spl.workspace = true
+hook-kit.workspace = true
+
+[dev-dependencies]
+spl-tlv-account-resolution.workspace = true
+spl-transfer-hook-interface.workspace = true
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = [
+    'cfg(feature, values("anchor-debug", "custom-heap", "custom-panic"))',
+    'cfg(target_os, values("solana"))',
+] }

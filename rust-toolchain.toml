@@ -1,0 +1,6 @@
+# Host Rust for formatting, lint, tests, IDLs and examples. Agave's host crates require >=1.97.1.
+# SBF compilation uses platform-tools 1.58's Rust 1.95.0, independently of this host pin.
+[toolchain]
+channel = "1.99.1"
+components = ["rustfmt", "clippy", "rust-analyzer"]
+profile = "minimal"

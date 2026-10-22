@@ -1,0 +1,22 @@
+# Anchor workspace for the XFChess Pass transfer hook. Pinned toolchain: see README.md.
+[toolchain]
+anchor_version = "1.2.1"
+
+[features]
+resolution = true
+skip-lint = false
+
+# This is the program ID the source declares (declare_id!). It was deployed to Devnet; see README.md
+# before deploying anything under it. No private key for it is in this repository.
+[programs.localnet]
+xfchess_pass = "4sFBJCjU3QvoWZCfxdHJcGBCPjToTy2BzNK23wmRPaw9"
+
+[workspace]
+members = ["programs/xfchess-pass"]
+
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "cargo test --locked --workspace"

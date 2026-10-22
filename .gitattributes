@@ -1,0 +1,8 @@
+# Source text is LF everywhere so Linux CI, generated IDLs and exported snapshots are byte-stable
+# on every platform. Binary assets are never normalised.
+* text=auto eol=lf
+*.so binary
+*.png binary
+*.jpg binary
+*.pdf binary
+*.zip binary

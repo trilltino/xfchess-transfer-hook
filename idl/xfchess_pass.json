@@ -1,0 +1,786 @@
+{
+  "address": "4sFBJCjU3QvoWZCfxdHJcGBCPjToTy2BzNK23wmRPaw9",
+  "metadata": {
+    "name": "xfchess_pass",
+    "version": "0.3.0",
+    "spec": "0.1.0",
+    "description": "Reference Transfer Hook (Anchor): a pass moves only to wallets with a current, registrar-attested rating record in range"
+  },
+  "instructions": [
+    {
+      "name": "execute",
+      "discriminator": [
+        105,
+        37,
+        101,
+        197,
+        75,
+        251,
+        102,
+        26
+      ],
+      "accounts": [
+        {
+          "name": "source_token_account"
+        },
+        {
+          "name": "mint",
+          "relations": [
+            "tournament_pass_config"
+          ]
+        },
+        {
+          "name": "destination_token_account"
+        },
+        {
+          "name": "owner_or_delegate",
+          "docs": [
+            "signature. Never `Signer`, never required to equal `source_token_account.owner`, and never",
+            "the wallet whose eligibility is checked."
+          ]
+        },
+        {
+          "name": "extra_account_meta_list",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  120,
+                  116,
+                  114,
+                  97,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tournament_pass_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  97,
+                  115,
+                  115,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "eligibility_record",
+          "docs": [
+            "system-owned unless that wallet was registered. `load_optional_account` checks its contents."
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  108,
+                  105,
+                  103,
+                  105,
+                  98,
+                  105,
+                  108,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              },
+              {
+                "kind": "account",
+                "path": "destination_token_account.owner"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "initialize",
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "tournament_pass_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  97,
+                  115,
+                  115,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "extra_account_meta_list",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  120,
+                  116,
+                  114,
+                  97,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "transfer_hook_authority",
+          "signer": true
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "tournament_id",
+          "type": "u64"
+        },
+        {
+          "name": "registrar",
+          "type": "pubkey"
+        },
+        {
+          "name": "policy",
+          "type": {
+            "defined": {
+              "name": "EligibilityPolicy"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "issue_eligibility",
+      "discriminator": [
+        29,
+        88,
+        236,
+        137,
+        74,
+        17,
+        193,
+        144
+      ],
+      "accounts": [
+        {
+          "name": "tournament_pass_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  97,
+                  115,
+                  115,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "tournament_pass_config.mint",
+                "account": "TournamentPassConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "eligibility_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  108,
+                  105,
+                  103,
+                  105,
+                  98,
+                  105,
+                  108,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "tournament_pass_config.mint",
+                "account": "TournamentPassConfig"
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "player"
+        },
+        {
+          "name": "registrar",
+          "signer": true,
+          "relations": [
+            "tournament_pass_config"
+          ]
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "verified_elo",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "refresh_eligibility",
+      "discriminator": [
+        18,
+        227,
+        118,
+        61,
+        5,
+        162,
+        20,
+        209
+      ],
+      "accounts": [
+        {
+          "name": "tournament_pass_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  97,
+                  115,
+                  115,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "tournament_pass_config.mint",
+                "account": "TournamentPassConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "eligibility_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  108,
+                  105,
+                  103,
+                  105,
+                  98,
+                  105,
+                  108,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "tournament_pass_config.mint",
+                "account": "TournamentPassConfig"
+              },
+              {
+                "kind": "account",
+                "path": "eligibility_record.player",
+                "account": "EligibilityRecord"
+              }
+            ]
+          }
+        },
+        {
+          "name": "registrar",
+          "signer": true,
+          "relations": [
+            "tournament_pass_config"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "verified_elo",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "revoke_eligibility",
+      "discriminator": [
+        86,
+        156,
+        4,
+        240,
+        195,
+        239,
+        201,
+        42
+      ],
+      "accounts": [
+        {
+          "name": "tournament_pass_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  97,
+                  115,
+                  115,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "tournament_pass_config.mint",
+                "account": "TournamentPassConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "eligibility_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  108,
+                  105,
+                  103,
+                  105,
+                  98,
+                  105,
+                  108,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "tournament_pass_config.mint",
+                "account": "TournamentPassConfig"
+              },
+              {
+                "kind": "account",
+                "path": "eligibility_record.player",
+                "account": "EligibilityRecord"
+              }
+            ]
+          }
+        },
+        {
+          "name": "registrar",
+          "signer": true,
+          "relations": [
+            "tournament_pass_config"
+          ]
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "set_paused",
+      "discriminator": [
+        91,
+        60,
+        125,
+        192,
+        176,
+        225,
+        166,
+        218
+      ],
+      "accounts": [
+        {
+          "name": "tournament_pass_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  97,
+                  115,
+                  115,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "tournament_pass_config.mint",
+                "account": "TournamentPassConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "registrar",
+          "signer": true,
+          "relations": [
+            "tournament_pass_config"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "is_paused",
+          "type": "bool"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "EligibilityRecord",
+      "discriminator": [
+        63,
+        254,
+        108,
+        207,
+        86,
+        176,
+        56,
+        170
+      ]
+    },
+    {
+      "name": "TournamentPassConfig",
+      "discriminator": [
+        55,
+        121,
+        229,
+        33,
+        132,
+        84,
+        144,
+        61
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 53249,
+      "name": "UnsupportedVersion",
+      "msg": "the pass config version is not supported"
+    },
+    {
+      "code": 53250,
+      "name": "InvalidPolicy",
+      "msg": "the eligibility policy or registrar is invalid"
+    },
+    {
+      "code": 53251,
+      "name": "PassPaused",
+      "msg": "pass transfers are paused"
+    },
+    {
+      "code": 53252,
+      "name": "EligibilityRevoked",
+      "msg": "the recipient's eligibility record is revoked"
+    },
+    {
+      "code": 53253,
+      "name": "EligibilityExpired",
+      "msg": "the recipient's eligibility record is stale or from the future"
+    },
+    {
+      "code": 53254,
+      "name": "EligibilityMismatch",
+      "msg": "the eligibility record is not this recipient's or this mint's"
+    },
+    {
+      "code": 53255,
+      "name": "RecipientNotEligible",
+      "msg": "the recipient has no eligibility record"
+    },
+    {
+      "code": 53256,
+      "name": "RatingOutsideRange",
+      "msg": "the verified rating is outside the tournament range"
+    },
+    {
+      "code": 53257,
+      "name": "InvalidTransferAmount",
+      "msg": "a pass transfer must move exactly one unit"
+    },
+    {
+      "code": 53258,
+      "name": "InvalidDestinationBalance",
+      "msg": "the destination token account must hold exactly one pass afterwards"
+    },
+    {
+      "code": 53259,
+      "name": "UnauthorizedRegistrar",
+      "msg": "only the pass registrar may sign this instruction"
+    },
+    {
+      "code": 53260,
+      "name": "MintNotIndivisible",
+      "msg": "a pass mint must be indivisible (zero decimals)"
+    },
+    {
+      "code": 53261,
+      "name": "UnsupportedMintExtension",
+      "msg": "confidential-balance mint extensions are unsupported"
+    }
+  ],
+  "types": [
+    {
+      "name": "EligibilityPolicy",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "min_elo",
+            "type": "u32"
+          },
+          {
+            "name": "max_elo",
+            "type": "u32"
+          },
+          {
+            "name": "max_eligibility_age_slots",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EligibilityRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "player",
+            "type": "pubkey"
+          },
+          {
+            "name": "verified_elo",
+            "type": "u32"
+          },
+          {
+            "name": "verified_at_slot",
+            "type": "u64"
+          },
+          {
+            "name": "is_revoked",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TournamentPassConfig",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "version",
+            "type": "u8"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "extra_account_meta_list_bump",
+            "type": "u8"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "tournament_id",
+            "type": "u64"
+          },
+          {
+            "name": "registrar",
+            "type": "pubkey"
+          },
+          {
+            "name": "policy",
+            "type": {
+              "defined": {
+                "name": "EligibilityPolicy"
+              }
+            }
+          },
+          {
+            "name": "is_paused",
+            "type": "bool"
+          }
+        ]
+      }
+    }
+  ]
+}

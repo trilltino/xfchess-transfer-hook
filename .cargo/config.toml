@@ -1,0 +1,4 @@
+# Retain resolver 2 for the edition-2021 workspace. Prefer dependencies compatible with
+# its SBF MSRV; host test/RPC crates additionally require the pinned newer host toolchain.
+[resolver]
+incompatible-rust-versions = "fallback"
